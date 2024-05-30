@@ -1,6 +1,6 @@
-package com.example.domain.utils
+package util
 
-object ApiConstants {
+object NetworkConstants {
 
     private const val BASE_URL = ""
     const val LOGIN_URL = "$BASE_URL/auth/login/"
