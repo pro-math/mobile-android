@@ -123,7 +123,132 @@ fun LoginCard() {
 }
 
 @Composable
+fun RegistrationCard() {
+
+    var login by remember {
+        mutableStateOf("")
+    }
+    var password by remember {
+        mutableStateOf("")
+    }
+    var password2 by remember {
+        mutableStateOf("")
+    }
+    var showPassword by remember {
+        mutableStateOf(false)
+    }
+
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = palette.base200, shape = RoundedCornerShape(10.dp))
+            .padding(16.dp)
+    ) {
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = login,
+            onValueChange = {
+                login = it
+            },
+            placeholder = {
+                Text(text = "Login")
+            },
+            leadingIcon = {
+                Icon(imageVector = Icons.Default.Person, contentDescription = null)
+            },
+            colors = TextFieldDefaults.colors(
+                unfocusedContainerColor = Color(0x00FFFFFF),
+                unfocusedTextColor = palette.baseContent,
+                focusedContainerColor = Color(0x00FFFFFF),
+                focusedTextColor = palette.baseContent,
+                focusedIndicatorColor = palette.baseContent
+            )
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = password,
+            onValueChange = {
+                password = it
+            },
+            placeholder = {
+                Text(text = "Password")
+            },
+            leadingIcon = {
+                Icon(imageVector = Icons.Default.Lock, contentDescription = null)
+            },
+            trailingIcon = {
+                val icon = if(showPassword) {
+                    Icons.Filled.Favorite
+                } else {
+                    Icons.Filled.FavoriteBorder
+                }
+
+                IconButton(onClick = { showPassword = !showPassword }) {
+                    Icon(imageVector = icon, contentDescription = null)
+                }
+            },
+            visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            colors = TextFieldDefaults.colors(
+                unfocusedContainerColor = Color(0x00FFFFFF),
+                unfocusedTextColor = palette.baseContent,
+                focusedContainerColor = Color(0x00FFFFFF),
+                focusedTextColor = palette.baseContent,
+                focusedIndicatorColor = palette.baseContent
+            )
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        OutlinedTextField(
+            modifier = Modifier.fillMaxWidth(),
+            value = password2,
+            onValueChange = {
+                password2 = it
+            },
+            placeholder = {
+                Text(text = "Confirm password")
+            },
+            leadingIcon = {
+                Icon(imageVector = Icons.Default.Lock, contentDescription = null)
+            },
+            trailingIcon = {
+                val icon = if(showPassword) {
+                    Icons.Filled.Favorite
+                } else {
+                    Icons.Filled.FavoriteBorder
+                }
+
+                IconButton(onClick = { showPassword = !showPassword }) {
+                    Icon(imageVector = icon, contentDescription = null)
+                }
+            },
+            visualTransformation = if (showPassword) VisualTransformation.None else PasswordVisualTransformation(),
+            keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Password),
+            colors = TextFieldDefaults.colors(
+                unfocusedContainerColor = Color(0x00FFFFFF),
+                unfocusedTextColor = palette.baseContent,
+                focusedContainerColor = Color(0x00FFFFFF),
+                focusedTextColor = palette.baseContent,
+                focusedIndicatorColor = palette.baseContent
+            )
+        )
+        Spacer(modifier = Modifier.height(8.dp))
+        Button(
+            onClick = { /*TODO*/ },
+            modifier = Modifier
+                .fillMaxWidth(),
+            colors = ButtonDefaults.buttonColors(
+                containerColor = palette.primary,
+            ),
+            shape = RoundedCornerShape(10.dp)
+        ) {
+            Text(text = "Registration")
+        }
+    }
+}
+
+@Composable
 @Preview
 fun PreviewLoginCard() {
-    LoginCard()
+    RegistrationCard()
 }
