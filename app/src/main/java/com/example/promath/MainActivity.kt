@@ -116,16 +116,32 @@ class MainActivity : ComponentActivity() {
                     val padding = it
                     val startScreen = "home_screen"
                     NavHost(navController = navController, startDestination = startScreen) {
-                        composable("home_screen") {
+                        composable(
+                            route = "home_screen",
+                            exitTransition = null,
+                            enterTransition = null
+                        ) {
                             MainScreen()
                         }
-                        composable("rating_screen") {
+                        composable(
+                            route = "rating_screen",
+                            exitTransition = null,
+                            enterTransition = null
+                        ) {
                             RatingScreen()
                         }
-                        composable("profile_screen") {
+                        composable(
+                            route = "profile_screen",
+                            exitTransition = null,
+                            enterTransition = null
+                        ) {
                             ProfileScreen()
                         }
-                        composable("login_screen") {
+                        composable(
+                            route = "login_screen",
+                            exitTransition = null,
+                            enterTransition = null
+                        ) {
                             LoginScreen()
                         }
                     }
