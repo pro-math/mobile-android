@@ -42,6 +42,7 @@ fun MainScreen() {
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = palette.primary,
+                contentColor = palette.primaryContent
             ),
             shape = RoundedCornerShape(10.dp)
         ) {

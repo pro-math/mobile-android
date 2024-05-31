@@ -77,7 +77,8 @@ fun LoginCard() {
                 focusedContainerColor = Color(0x00FFFFFF),
                 focusedTextColor = palette.baseContent,
                 focusedIndicatorColor = palette.baseContent
-            )
+            ),
+            maxLines = 1
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
@@ -111,7 +112,8 @@ fun LoginCard() {
                 focusedContainerColor = Color(0x00FFFFFF),
                 focusedTextColor = palette.baseContent,
                 focusedIndicatorColor = palette.baseContent
-            )
+            ),
+            maxLines = 1
         )
         Spacer(modifier = Modifier.height(8.dp))
         Button(
@@ -120,6 +122,7 @@ fun LoginCard() {
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = palette.primary,
+                contentColor = palette.primaryContent
             ),
             shape = RoundedCornerShape(10.dp)
         ) {
@@ -171,7 +174,8 @@ fun RegistrationCard() {
                 focusedContainerColor = Color(0x00FFFFFF),
                 focusedTextColor = palette.baseContent,
                 focusedIndicatorColor = palette.baseContent
-            )
+            ),
+            maxLines = 1
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
@@ -205,7 +209,8 @@ fun RegistrationCard() {
                 focusedContainerColor = Color(0x00FFFFFF),
                 focusedTextColor = palette.baseContent,
                 focusedIndicatorColor = palette.baseContent
-            )
+            ),
+            maxLines = 1
         )
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
@@ -239,7 +244,8 @@ fun RegistrationCard() {
                 focusedContainerColor = Color(0x00FFFFFF),
                 focusedTextColor = palette.baseContent,
                 focusedIndicatorColor = palette.baseContent
-            )
+            ),
+            maxLines = 1
         )
         Spacer(modifier = Modifier.height(8.dp))
         Button(
@@ -248,6 +254,7 @@ fun RegistrationCard() {
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
                 containerColor = palette.primary,
+                contentColor = palette.primaryContent
             ),
             shape = RoundedCornerShape(10.dp)
         ) {
@@ -259,5 +266,5 @@ fun RegistrationCard() {
 @Composable
 @Preview
 fun PreviewLoginCard() {
-    RegistrationCard()
+    LoginCard()
 }

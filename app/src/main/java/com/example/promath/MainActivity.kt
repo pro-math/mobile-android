@@ -135,7 +135,7 @@ class MainActivity : ComponentActivity() {
                             exitTransition = null,
                             enterTransition = null
                         ) {
-                            ProfileScreen()
+                            ProfileScreen(navController = navController)
                         }
                         composable(
                             route = "login_screen",

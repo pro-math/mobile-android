@@ -108,7 +108,8 @@ fun FieldDecision() {
                     errorContainerColor = Color(0x00FFFFFF),
                     errorTextColor = palette.baseContent,
                     focusedContainerColor = Color(0x00FFFFFF)
-                )
+                ),
+                maxLines = 1
             )
         }
         Text(
