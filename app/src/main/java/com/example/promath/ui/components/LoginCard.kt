@@ -27,14 +27,17 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.promath.ui.themenew.palette
 
 @Composable
@@ -51,8 +54,11 @@ fun LoginCard() {
         modifier = Modifier
             .fillMaxWidth()
             .background(color = palette.base200, shape = RoundedCornerShape(10.dp))
-            .padding(16.dp)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(text = "Login", color = palette.baseContent, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+        Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = login,
@@ -117,7 +123,7 @@ fun LoginCard() {
             ),
             shape = RoundedCornerShape(10.dp)
         ) {
-            Text(text = "Login")
+            Text(text = "Accept")
         }
     }
 }
@@ -142,8 +148,11 @@ fun RegistrationCard() {
         modifier = Modifier
             .fillMaxWidth()
             .background(color = palette.base200, shape = RoundedCornerShape(10.dp))
-            .padding(16.dp)
+            .padding(16.dp),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
+        Text(text = "Registration", color = palette.baseContent, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+        Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
             value = login,
@@ -242,7 +251,7 @@ fun RegistrationCard() {
             ),
             shape = RoundedCornerShape(10.dp)
         ) {
-            Text(text = "Registration")
+            Text(text = "Accept")
         }
     }
 }
