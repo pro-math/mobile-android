@@ -49,7 +49,7 @@ class MainActivity : ComponentActivity() {
                 }
                 val navController = rememberNavController()
                 Scaffold(
-                    modifier = Modifier.background(color = palette.base100),
+                    containerColor = palette.base100,
                     bottomBar = {
                         NavigationBar(
                             containerColor = palette.base200
