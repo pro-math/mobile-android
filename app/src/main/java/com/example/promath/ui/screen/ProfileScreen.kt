@@ -45,7 +45,7 @@ fun ProfileScreen(navController: NavController) {
         Spacer(modifier = Modifier.height(8.dp))
         Button(
             onClick = {
-                navController.navigate("home_screen")
+                navController.navigate("login_screen")
             },
             colors = ButtonDefaults.buttonColors(
                 containerColor = palette.primary,

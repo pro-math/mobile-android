@@ -3,8 +3,10 @@ package com.example.promath
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Home
@@ -25,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -46,6 +49,7 @@ class MainActivity : ComponentActivity() {
                 }
                 val navController = rememberNavController()
                 Scaffold(
+                    modifier = Modifier.background(color = palette.base100),
                     bottomBar = {
                         NavigationBar(
                             containerColor = palette.base200
@@ -113,36 +117,31 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) {
-                    val padding = it
                     val startScreen = "home_screen"
-                    NavHost(navController = navController, startDestination = startScreen) {
-                        composable(
-                            route = "home_screen",
-                            exitTransition = null,
-                            enterTransition = null
-                        ) {
-                            MainScreen()
-                        }
-                        composable(
-                            route = "rating_screen",
-                            exitTransition = null,
-                            enterTransition = null
-                        ) {
-                            RatingScreen()
-                        }
-                        composable(
-                            route = "profile_screen",
-                            exitTransition = null,
-                            enterTransition = null
-                        ) {
-                            ProfileScreen(navController = navController)
-                        }
-                        composable(
-                            route = "login_screen",
-                            exitTransition = null,
-                            enterTransition = null
-                        ) {
-                            LoginScreen()
+                    Column(
+                        modifier = Modifier.padding(bottom = it.calculateBottomPadding())
+                    ) {
+                        NavHost(navController = navController, startDestination = startScreen) {
+                            composable(
+                                route = "home_screen"
+                            ) {
+                                MainScreen()
+                            }
+                            composable(
+                                route = "rating_screen"
+                            ) {
+                                RatingScreen()
+                            }
+                            composable(
+                                route = "profile_screen"
+                            ) {
+                                ProfileScreen(navController = navController)
+                            }
+                            composable(
+                                route = "login_screen"
+                            ) {
+                                LoginScreen()
+                            }
                         }
                     }
                 }
