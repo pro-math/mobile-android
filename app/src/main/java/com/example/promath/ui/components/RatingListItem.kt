@@ -25,7 +25,7 @@ fun RatingListItem() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = palette.base200, shape = RoundedCornerShape(10.dp))
+            .background(color = palette.base300, shape = RoundedCornerShape(10.dp))
             .padding(16.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
