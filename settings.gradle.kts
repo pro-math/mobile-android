@@ -23,3 +23,4 @@ rootProject.name = "ProMath"
 include(":app")
 include(":domain")
 include(":data")
+include(":genratrionOfExamples")

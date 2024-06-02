@@ -3,6 +3,8 @@ package com.example.promath
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -35,6 +37,7 @@ import com.example.promath.ui.screen.LoginScreen
 import com.example.promath.ui.screen.MainScreen
 import com.example.promath.ui.screen.ProfileScreen
 import com.example.promath.ui.screen.RatingScreen
+import com.example.promath.ui.screen.RegistrationScreen
 import com.example.promath.ui.theme.ProMathTheme
 import com.example.promath.ui.themenew.palette
 
@@ -121,7 +124,16 @@ class MainActivity : ComponentActivity() {
                     Column(
                         modifier = Modifier.padding(bottom = it.calculateBottomPadding())
                     ) {
-                        NavHost(navController = navController, startDestination = startScreen) {
+                        NavHost(
+                            navController = navController,
+                            startDestination = startScreen,
+                            enterTransition = {
+                                EnterTransition.None
+                            },
+                            exitTransition = {
+                                ExitTransition.None
+                            }
+                        ) {
                             composable(
                                 route = "home_screen"
                             ) {
@@ -140,8 +152,14 @@ class MainActivity : ComponentActivity() {
                             composable(
                                 route = "login_screen"
                             ) {
-                                LoginScreen()
+                                LoginScreen(navController = navController)
                             }
+                            composable(
+                                route = "registration_screen"
+                            ) {
+                                RegistrationScreen()
+                            }
+
                         }
                     }
                 }

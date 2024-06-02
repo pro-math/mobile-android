@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountCircle
 import androidx.compose.material.icons.filled.Favorite
 import androidx.compose.material.icons.filled.FavoriteBorder
 import androidx.compose.material.icons.filled.Lock
@@ -20,7 +19,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -30,7 +28,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
@@ -39,11 +36,15 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.promath.ui.themenew.palette
+import com.example.promath.viewmodel.LoginViewModel
 
 @Composable
-fun LoginCard() {
+fun LoginCard(vm: LoginViewModel) {
 
     var login by remember {
+        mutableStateOf("")
+    }
+    var password by remember {
         mutableStateOf("")
     }
     var showPassword by remember {
@@ -83,9 +84,9 @@ fun LoginCard() {
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = login,
+            value = password,
             onValueChange = {
-                login = it
+                password = it
             },
             placeholder = {
                 Text(text = "Password")
@@ -117,7 +118,9 @@ fun LoginCard() {
         )
         Spacer(modifier = Modifier.height(8.dp))
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                vm.loginUser(login, password)
+            },
             modifier = Modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
@@ -266,5 +269,5 @@ fun RegistrationCard() {
 @Composable
 @Preview
 fun PreviewLoginCard() {
-    LoginCard()
+    LoginCard(vm)
 }
