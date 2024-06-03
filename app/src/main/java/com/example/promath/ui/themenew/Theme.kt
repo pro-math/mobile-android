@@ -18,6 +18,7 @@ val palette = Colors(
     base200 = Color(0xFF191e24),
     base300 = Color(0xFF15191e),
     baseContent = Color(0xFFA6ADBB),
+    baseContentSecondary = Color(0xFF6C7079),
     info = Color(0xFF8be9fd),
     infoContent = Color(0xFF000000),
     success = Color(0xFF50fa7b),

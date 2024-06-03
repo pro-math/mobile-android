@@ -21,9 +21,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.promath.ui.components.FieldDecision
 import com.example.promath.ui.components.TabAnswers
+import com.example.promath.viewmodel.MainViewModel
 
 @Composable
-fun MainScreen() {
+fun MainScreen(vm: MainViewModel) {
+    vm.loadExample()
+
     Column(
         modifier = Modifier
             .background(color = palette.base100)
@@ -32,7 +35,7 @@ fun MainScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        FieldDecision()
+        FieldDecision(vm = vm)
         Spacer(modifier = Modifier.height(8.dp))
         TabAnswers()
         Spacer(modifier = Modifier.height(8.dp))
@@ -51,10 +54,4 @@ fun MainScreen() {
             )
         }
     }
-}
-
-@Composable
-@Preview
-fun PreviewMainScreen() {
-    MainScreen()
 }

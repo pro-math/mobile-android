@@ -8,14 +8,11 @@ class RegistrationUserUseCase {
     fun registration(
         login: String,
         password: String
-    ): ResultModel<UserModel> {
+    ): ResultModel<String> {
         MockUser.login = login
         MockUser.password = password
 
-        return ResultModel.success(UserModel(
-            login = login,
-            token = password
-        ))
+        return ResultModel.success(password)
     }
 
 }

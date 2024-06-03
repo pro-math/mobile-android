@@ -15,6 +15,7 @@ data class Colors(
     val base200: Color,
     val base300: Color,
     val baseContent: Color,
+    val baseContentSecondary: Color,
     val info: Color,
     val infoContent: Color,
     val success: Color,

@@ -1,4 +1,4 @@
-package com.example.genratrionofexamples
+package com.example.generationOfExamples
 
 class ExampleGenerator {
 
@@ -39,7 +39,7 @@ class ExampleGenerator {
             TypeOperation.DIVIDE -> number1 / number2
         }
 
-        val exampleString: String = number1.toString() + convertTypeOperationToString(typeOperation = typeOperation)
+        val exampleString: String = number1.toString() + convertTypeOperationToString(typeOperation = typeOperation) + number2.toString() + " ="
 
         return ExampleModel(
             exampleString = exampleString,

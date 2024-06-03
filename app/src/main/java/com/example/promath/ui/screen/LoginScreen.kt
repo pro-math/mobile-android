@@ -31,7 +31,7 @@ fun LoginScreen(vm: LoginViewModel, navController: NavController) {
             .padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        LoginCard(vm = vm)
+        LoginCard(vm = vm, navController = navController)
         Spacer(modifier = Modifier.height(8.dp))
         Button(
             modifier = Modifier.fillMaxWidth(),
@@ -47,10 +47,4 @@ fun LoginScreen(vm: LoginViewModel, navController: NavController) {
             Text(text = "Registration")
         }
     }
-}
-
-@Composable
-@Preview
-fun PreviewLoginScreen() {
-    LoginScreen(rememberNavController())
 }

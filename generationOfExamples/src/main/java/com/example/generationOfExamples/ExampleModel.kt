@@ -1,4 +1,4 @@
-package com.example.genratrionofexamples
+package com.example.generationOfExamples
 
 data class ExampleModel(
     val exampleString: String,

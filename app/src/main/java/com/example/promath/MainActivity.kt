@@ -33,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import com.example.domain.models.ResultModel
+import com.example.domain.usecase.GetTokenFromLocalStorageUseCase
 import com.example.promath.ui.screen.LoginScreen
 import com.example.promath.ui.screen.MainScreen
 import com.example.promath.ui.screen.ProfileScreen
@@ -40,8 +42,19 @@ import com.example.promath.ui.screen.RatingScreen
 import com.example.promath.ui.screen.RegistrationScreen
 import com.example.promath.ui.theme.ProMathTheme
 import com.example.promath.ui.themenew.palette
+import com.example.promath.viewmodel.LoginViewModel
+import com.example.promath.viewmodel.MainViewModel
+import com.example.promath.viewmodel.RegistrationViewModel
+import org.koin.android.ext.android.inject
+import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
+
+    private val mainViewModel by viewModel<MainViewModel>()
+    private val loginViewModel by viewModel<LoginViewModel>()
+    private val registrationViewModel by viewModel<RegistrationViewModel>()
+    private val getTokenFromLocalStorageUseCase by inject<GetTokenFromLocalStorageUseCase>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -61,7 +74,7 @@ class MainActivity : ComponentActivity() {
                                 selected = selectedItem == 0,
                                 onClick = {
                                     selectedItem = 0
-                                    navController.navigate("home_screen")
+                                    navController.navigate("main_screen")
                                 },
                                 icon = {
                                     Icon(imageVector = Icons.Default.Home, contentDescription = null)
@@ -120,7 +133,11 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) {
-                    val startScreen = "home_screen"
+                    val startScreen = if (getTokenFromLocalStorageUseCase.execute().status == ResultModel.Status.FAILURE) {
+                        "login_screen"
+                    } else {
+                        "main_screen"
+                    }
                     Column(
                         modifier = Modifier.padding(bottom = it.calculateBottomPadding())
                     ) {
@@ -135,9 +152,9 @@ class MainActivity : ComponentActivity() {
                             }
                         ) {
                             composable(
-                                route = "home_screen"
+                                route = "main_screen"
                             ) {
-                                MainScreen()
+                                MainScreen(vm = mainViewModel)
                             }
                             composable(
                                 route = "rating_screen"
@@ -152,12 +169,12 @@ class MainActivity : ComponentActivity() {
                             composable(
                                 route = "login_screen"
                             ) {
-                                LoginScreen(navController = navController)
+                                LoginScreen(vm = loginViewModel, navController = navController)
                             }
                             composable(
                                 route = "registration_screen"
                             ) {
-                                RegistrationScreen()
+                                RegistrationScreen(vm = registrationViewModel, navController = navController)
                             }
 
                         }

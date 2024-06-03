@@ -8,13 +8,10 @@ class LoginUserUseCase {
     fun login(
         login: String,
         password: String
-    ): ResultModel<UserModel> {
+    ): ResultModel<String> {
         return if (MockUser.login == login && MockUser.password == password) {
             ResultModel.success(
-                UserModel(
-                    login = MockUser.login,
-                    token = MockUser.password
-                )
+                password
             )
         } else {
             ResultModel.failure(

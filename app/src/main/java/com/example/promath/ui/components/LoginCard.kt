@@ -22,6 +22,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -32,14 +33,16 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.navigation.NavController
+import com.example.domain.models.ResultModel
 import com.example.promath.ui.themenew.palette
 import com.example.promath.viewmodel.LoginViewModel
+import com.example.promath.viewmodel.RegistrationViewModel
 
 @Composable
-fun LoginCard(vm: LoginViewModel) {
+fun LoginCard(vm: LoginViewModel, navController: NavController) {
 
     var login by remember {
         mutableStateOf("")
@@ -50,6 +53,11 @@ fun LoginCard(vm: LoginViewModel) {
     var showPassword by remember {
         mutableStateOf(false)
     }
+    val loginResult by vm.loginResult.observeAsState()
+
+    if (loginResult != null && loginResult!!.status == ResultModel.Status.SUCCESS) {
+        navController.navigate("main_screen")
+    }
 
     Column(
         modifier = Modifier
@@ -59,6 +67,9 @@ fun LoginCard(vm: LoginViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "Login", color = palette.baseContent, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+        if (loginResult != null && loginResult!!.status == ResultModel.Status.FAILURE) {
+            Text(text = loginResult!!.message.toString(), color = palette.error, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+        }
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -135,7 +146,7 @@ fun LoginCard(vm: LoginViewModel) {
 }
 
 @Composable
-fun RegistrationCard() {
+fun RegistrationCard(vm: RegistrationViewModel, navController: NavController) {
 
     var login by remember {
         mutableStateOf("")
@@ -149,6 +160,14 @@ fun RegistrationCard() {
     var showPassword by remember {
         mutableStateOf(false)
     }
+    var correctPassword by remember {
+        mutableStateOf(true)
+    }
+    val registrationResult by vm.registrationResult.observeAsState()
+
+    if (registrationResult != null && registrationResult!!.status == ResultModel.Status.SUCCESS) {
+        navController.navigate("main_screen")
+    }
 
     Column(
         modifier = Modifier
@@ -158,6 +177,12 @@ fun RegistrationCard() {
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = "Registration", color = palette.baseContent, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+        if (registrationResult != null && registrationResult!!.status == ResultModel.Status.FAILURE) {
+            Text(text = registrationResult!!.message.toString(), color = palette.error, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+        }
+        if (!correctPassword) {
+            Text(text = "Incorrect password", color = palette.error, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+        }
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
@@ -252,7 +277,16 @@ fun RegistrationCard() {
         )
         Spacer(modifier = Modifier.height(8.dp))
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                if (password == password2) {
+                    vm.registrationUser(
+                        login = login,
+                        password = password
+                    )
+                } else {
+                    correctPassword = false
+                }
+            },
             modifier = Modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
@@ -264,10 +298,4 @@ fun RegistrationCard() {
             Text(text = "Accept")
         }
     }
-}
-
-@Composable
-@Preview
-fun PreviewLoginCard() {
-    LoginCard(vm)
 }

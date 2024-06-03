@@ -13,9 +13,10 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import com.example.promath.ui.components.RegistrationCard
 import com.example.promath.ui.themenew.palette
+import com.example.promath.viewmodel.RegistrationViewModel
 
 @Composable
-fun RegistrationScreen() {
+fun RegistrationScreen(vm: RegistrationViewModel,navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -23,7 +24,7 @@ fun RegistrationScreen() {
             .padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        RegistrationCard()
+        RegistrationCard(vm = vm, navController = navController)
         Spacer(modifier = Modifier.height(8.dp))
     }
 }
