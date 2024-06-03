@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.promath.ui.components.FieldDecision
+import com.example.promath.ui.components.ModeSelection
 import com.example.promath.ui.components.TabAnswers
 import com.example.promath.viewmodel.MainViewModel
 
@@ -35,6 +36,8 @@ fun MainScreen(vm: MainViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
+        ModeSelection()
+        Spacer(modifier = Modifier.height(8.dp))
         FieldDecision(vm = vm)
         Spacer(modifier = Modifier.height(8.dp))
         TabAnswers()
