@@ -14,6 +14,8 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
@@ -27,6 +29,9 @@ import com.example.promath.viewmodel.MainViewModel
 @Composable
 fun MainScreen(vm: MainViewModel) {
     vm.loadExample()
+    val isStartGame = remember {
+        mutableStateOf(false)
+    }
 
     Column(
         modifier = Modifier
@@ -36,25 +41,53 @@ fun MainScreen(vm: MainViewModel) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        ModeSelection()
-        Spacer(modifier = Modifier.height(8.dp))
-        FieldDecision(vm = vm)
-        Spacer(modifier = Modifier.height(8.dp))
-        TabAnswers()
-        Spacer(modifier = Modifier.height(8.dp))
+        if (isStartGame.value) {
+            FieldDecision(vm = vm)
+            Spacer(modifier = Modifier.height(8.dp))
+            TabAnswers(vm = vm)
+            Spacer(modifier = Modifier.height(8.dp))
+        } else {
+            ModeSelection(vm = vm)
+            Spacer(modifier = Modifier.height(8.dp))
+        }
+        val buttonContainerColor = if (isStartGame.value) {
+            palette.error
+        } else {
+            palette.primary
+        }
+        val buttonContentColor = if (isStartGame.value) {
+            palette.errorContent
+        } else {
+            palette.primaryContent
+        }
         Button(
-            onClick = { /*TODO*/ },
+            onClick = {
+                isStartGame.value = !isStartGame.value
+                vm.clearAnswers()
+            },
             modifier = Modifier
                 .fillMaxWidth(),
             colors = ButtonDefaults.buttonColors(
-                containerColor = palette.primary,
-                contentColor = palette.primaryContent
+                containerColor = buttonContainerColor,
+                contentColor = buttonContentColor
             ),
             shape = RoundedCornerShape(10.dp)
         ) {
-            Text(
-                text = "Start"
-            )
+            if (isStartGame.value) {
+                Text(
+                    text = "Stop"
+                )
+            } else {
+                Text(
+                    text = "Start"
+                )
+            }
         }
     }
+}
+
+@Composable
+@Preview
+fun PreviewMainScreen() {
+//    MainScreen()
 }

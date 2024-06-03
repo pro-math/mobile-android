@@ -12,6 +12,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,17 +25,17 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.promath.ui.themenew.palette
+import com.example.promath.viewmodel.MainViewModel
 
 @Composable
-fun TabAnswers() {
-    var percent by remember {
-        mutableIntStateOf(70)
-    }
-    var success by remember {
-        mutableIntStateOf(7)
-    }
-    var mistakes by remember {
-        mutableIntStateOf(3)
+fun TabAnswers(vm :MainViewModel) {
+    val examples by vm.countExamples.observeAsState()
+    val success by vm.countSuccessAnswer.observeAsState()
+    val mistakes = examples!! - success!!
+    val percent = if (examples != 0) {
+        success!! * 100 / examples!!
+    } else {
+        0
     }
 
     Row(
@@ -45,7 +46,9 @@ fun TabAnswers() {
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(4.dp).weight(1F)
+            modifier = Modifier
+                .padding(4.dp)
+                .weight(1F)
         ) {
             Text(
                 text = "Percent",
@@ -62,7 +65,9 @@ fun TabAnswers() {
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(4.dp).weight(1F)
+            modifier = Modifier
+                .padding(4.dp)
+                .weight(1F)
         ) {
             Text(
                 text = "Success",
@@ -79,7 +84,9 @@ fun TabAnswers() {
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            modifier = Modifier.padding(4.dp).weight(1F)
+            modifier = Modifier
+                .padding(4.dp)
+                .weight(1F)
         ) {
             Text(
                 text = "Mistakes",
@@ -125,5 +132,5 @@ private fun TabAnswersItem(
 @Composable
 @Preview
 fun PreviewTabAnswers() {
-    TabAnswers()
+//    TabAnswers()
 }
