@@ -14,9 +14,9 @@ val domainModule = module {
 
     factory<GetTokenFromLocalStorageUseCase> { GetTokenFromLocalStorageUseCase(localStorageRepository = get<LocalStorageRepositoryImpl>()) }
 
-    factory<LoginUserUseCase> { LoginUserUseCase() }
+    factory<LoginUserUseCase> { LoginUserUseCase(apiRepository = get()) }
 
-    factory<RegistrationUserUseCase> { RegistrationUserUseCase() }
+    factory<RegistrationUserUseCase> { RegistrationUserUseCase(apiRepository = get()) }
 
     factory<SetTokenToLocalStorageUseCase> { SetTokenToLocalStorageUseCase(localStorageRepository = get<LocalStorageRepositoryImpl>()) }
 
