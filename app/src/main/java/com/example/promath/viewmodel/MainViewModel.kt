@@ -1,5 +1,7 @@
 package com.example.promath.viewmodel
 
+import android.os.CountDownTimer
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -26,6 +28,48 @@ class MainViewModel(
 
     val currentTime: MutableLiveData<Int> = MutableLiveData(0)
     val currentCount: MutableLiveData<Int> = MutableLiveData(0)
+
+    private val _time: MutableLiveData<Int> = MutableLiveData()
+    val time: LiveData<Int> = _time
+
+    val isStopGame: MutableLiveData<Boolean> = MutableLiveData(false)
+
+    private var timer: CountDownTimer = object : CountDownTimer(30000, 1000) {
+
+        override fun onTick(millisUntilFinished: Long) {
+            _time.postValue((millisUntilFinished / 1000).toInt())
+        }
+
+        override fun onFinish() {
+            isStopGame.postValue(true)
+        }
+    }
+
+
+    fun startTimer() {
+        val s = when (currentTime.value) {
+            0 -> 30
+            1 -> 60
+            2 -> 90
+            else -> 30
+        }
+        _time.postValue(s)
+        Log.i("TIMER START", s.toString())
+
+
+        timer = object : CountDownTimer((s * 1000).toLong(), 1000) {
+
+            override fun onTick(millisUntilFinished: Long) {
+                _time.postValue((millisUntilFinished / 1000).toInt())
+            }
+
+            override fun onFinish() {
+                isStopGame.postValue(true)
+            }
+        }
+
+        timer.start()
+    }
 
     fun addCountSuccessAnswer() {
         _countSuccessAnswer.postValue(_countSuccessAnswer.value!! + 1)
@@ -61,6 +105,8 @@ class MainViewModel(
     }
 
     fun clearAnswers() {
+        timer.cancel()
+        isStopGame.postValue(false)
         _countExamples.postValue(0)
         _countSuccessAnswer.postValue(0)
     }

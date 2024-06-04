@@ -1,5 +1,6 @@
 package com.example.promath.ui.components
 
+import android.os.CountDownTimer
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -16,6 +17,7 @@ import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.runtime.mutableIntStateOf
@@ -30,6 +32,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.lifecycle.MutableLiveData
 import com.example.promath.ui.themenew.palette
 import com.example.promath.viewmodel.MainViewModel
 
@@ -50,12 +53,18 @@ fun FieldDecision(vm: MainViewModel) {
     }
 
     val example by vm.example.observeAsState()
-    var timer by remember {
-        mutableIntStateOf(30)
-    }
     var previousExample by remember {
         mutableStateOf("2 + 1 = 3")
     }
+    val currentType by vm.currentType.observeAsState()
+    val countExamples by vm.countExamples.observeAsState()
+
+    val currentCount by vm.currentCount.observeAsState()
+
+    val isStopGame by vm.isStopGame.observeAsState()
+
+    val time by vm.time.observeAsState()
+
     Log.i("TEST GENERATE EXAMPLE", vm.example.value.toString())
 
     Column(
@@ -72,7 +81,7 @@ fun FieldDecision(vm: MainViewModel) {
             horizontalArrangement = Arrangement.End
         ) {
             Text(
-                text = "time: $timer s",
+                text = "time: $time s",
                 color = palette.baseContent,
                 fontSize = 20.sp
             )
@@ -93,6 +102,7 @@ fun FieldDecision(vm: MainViewModel) {
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
                 ),
+                enabled = !isStopGame!!,
                 keyboardActions = KeyboardActions(
                     onDone = {
                         if (textFieldValue == example?.answer.toString()) {
@@ -104,7 +114,19 @@ fun FieldDecision(vm: MainViewModel) {
                         vm.addCountExample()
                         textFieldValue = ""
                         previousExample = example!!.exampleString + " " + example!!.answer.toString()
-                        vm.loadExample()
+                        if (currentType == 0) {
+                            vm.loadExample()
+                        } else {
+                            if (countExamples!! < when (currentCount) {
+                                0 -> 9
+                                1 -> 99
+                                else -> 9
+                            }) {
+                                vm.loadExample()
+                            } else {
+                                vm.isStopGame.postValue(true)
+                            }
+                        }
                     }
                 ),
                 modifier = Modifier.weight(1F),

@@ -64,6 +64,9 @@ fun MainScreen(vm: MainViewModel) {
             onClick = {
                 isStartGame.value = !isStartGame.value
                 vm.clearAnswers()
+                if (isStartGame.value && vm.currentType.value == 0) {
+                    vm.startTimer()
+                }
             },
             modifier = Modifier
                 .fillMaxWidth(),
