@@ -12,4 +12,7 @@ class LocalStorageRepositoryImpl(
     override fun setTokenToLocalStorage(token: String) {
         localStorageSource.setTokenToLocalStorage(token = token)
     }
+
+    override fun getCurrentTheme(): ResultModel<String> = localStorageSource.getCurrentTheme()
+
 }

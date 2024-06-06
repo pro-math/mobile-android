@@ -8,4 +8,6 @@ interface LocalStorageRepository {
 
     fun setTokenToLocalStorage(token: String)
 
+    fun getCurrentTheme(): ResultModel<String>
+
 }
