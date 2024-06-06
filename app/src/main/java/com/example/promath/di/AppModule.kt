@@ -2,6 +2,7 @@ package com.example.promath.di
 
 import com.example.promath.viewmodel.LoginViewModel
 import com.example.promath.viewmodel.MainViewModel
+import com.example.promath.viewmodel.ProfileViewModel
 import com.example.promath.viewmodel.RegistrationViewModel
 import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
