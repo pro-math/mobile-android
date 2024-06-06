@@ -6,14 +6,35 @@ coreKtx = "1.13.1"
 junit = "4.13.2"
 junitVersion = "1.1.5"
 espressoCore = "3.5.1"
+kotlinxCoroutinesCore = "1.8.1"
+kotlinxSerializationJson = "1.5.1"
+kotlinxSerializationJsonVersion = "1.5.1"
+ktorClientAndroid = "2.3.11"
+ktorClientAndroidVersion = "2.3.11"
+ktorClientCio = "2.3.2"
+ktorClientContentNegotiation = "2.3.11"
+ktorClientContentNegotiationVersion = "2.3.11"
+ktorClientCore = "2.3.2"
+ktorClientCoreVersion = "2.3.11"
+ktorClientLoggingVersion = "2.3.11"
+ktorClientPluginsContentnegotination = "1.1.1"
+ktorClientSerializationVersion = "2.3.11"
+ktorKtorClientCore = "2.3.11"
+ktorSerializationKotlinxJson = "2.3.11"
+ktorClientLogging = "2.3.11"
+ktorClientSerialization = "2.3.11"
+ktorSerializationKotlinxJsonVersion = "2.3.11"
 lifecycleRuntimeKtx = "2.8.0"
 activityCompose = "1.9.0"
 composeBom = "2024.05.00"
 appcompat = "1.6.1"
+logbackClassic = "1.2.3"
+logbackClassicVersion = "1.2.3"
 material = "1.12.0"
 jetbrainsKotlinJvm = "1.9.0"
 navigationCompose = "2.7.7"
 runtimeLivedata = "1.6.7"
+firebaseCrashlyticsBuildtools = "3.0.0"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -32,9 +53,18 @@ androidx-ui-test-junit4 = { group = "androidx.compose.ui", name = "ui-test-junit
 androidx-material3 = { group = "androidx.compose.material3", name = "material3" }
 androidx-appcompat = { group = "androidx.appcompat", name = "appcompat", version.ref = "appcompat" }
 koin-android = { module = "io.insert-koin:koin-android", version.ref = "koinAndroid" }
+kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJsonVersion" }
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktorClientAndroidVersion" }
+ktor-client-content-negotiation = { module = "io.ktor:ktor-client-content-negotiation", version.ref = "ktorClientContentNegotiationVersion" }
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktorKtorClientCore" }
+ktor-client-logging = { module = "io.ktor:ktor-client-logging", version.ref = "ktorClientLoggingVersion" }
+ktor-client-serialization = { module = "io.ktor:ktor-client-serialization", version.ref = "ktorClientSerializationVersion" }
+ktor-serialization-kotlinx-json = { module = "io.ktor:ktor-serialization-kotlinx-json", version.ref = "ktorSerializationKotlinxJsonVersion" }
+logback-classic = { module = "ch.qos.logback:logback-classic", version.ref = "logbackClassicVersion" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-navigation-compose = { group = "androidx.navigation", name = "navigation-compose", version.ref = "navigationCompose" }
 androidx-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata", version.ref = "runtimeLivedata" }
+firebase-crashlytics-buildtools = { group = "com.google.firebase", name = "firebase-crashlytics-buildtools", version.ref = "firebaseCrashlyticsBuildtools" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
