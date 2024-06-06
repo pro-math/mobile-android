@@ -14,6 +14,10 @@ interface ApiRepository {
     suspend fun registrationUser(
         login: String,
         password: String
-    ): Result<String>
+    ): ResultModel<String>
+
+    suspend fun getUser(token: String): ResultModel<UserModel>
+
+    suspend fun createGameSession(gameSession: GameSession, token: String)
 
 }
