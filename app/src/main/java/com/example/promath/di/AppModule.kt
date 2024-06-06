@@ -14,4 +14,6 @@ val appModule = module {
 
     viewModel<RegistrationViewModel> { RegistrationViewModel(registrationUserUseCase = get(), setTokenToLocalStorageUseCase = get()) }
 
+    viewModel<ProfileViewModel> { ProfileViewModel(getTokenFromLocalStorageUseCase = get(), getUserUseCase = get(), setTokenToLocalStorageUseCase = get()) }
+
 }
