@@ -15,4 +15,8 @@ class LocalStorageRepositoryImpl(
 
     override fun getCurrentTheme(): ResultModel<String> = localStorageSource.getCurrentTheme()
 
+    override fun setThemeToLocalStorage(theme: String) {
+        localStorageSource.setThemeToLocalStorage(theme = theme)
+    }
+
 }

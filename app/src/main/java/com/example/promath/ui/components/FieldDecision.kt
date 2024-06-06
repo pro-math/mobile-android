@@ -63,6 +63,7 @@ fun FieldDecision(vm: MainViewModel) {
     val time by vm.time.observeAsState()
 
     if (isStopGame == true) {
+        Log.i("TEST CREATE GAME SESSION", "stop game")
         vm.createSession()
     }
 
