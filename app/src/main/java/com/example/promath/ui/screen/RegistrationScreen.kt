@@ -16,7 +16,7 @@ import com.example.promath.ui.themenew.palette
 import com.example.promath.viewmodel.RegistrationViewModel
 
 @Composable
-fun RegistrationScreen(vm: RegistrationViewModel,navController: NavController) {
+fun RegistrationScreen(vm: RegistrationViewModel, navController: NavController) {
     Column(
         modifier = Modifier
             .fillMaxSize()
