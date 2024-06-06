@@ -34,6 +34,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.example.domain.models.ResultModel
+import com.example.domain.usecase.GetCurrentThemeUseCase
 import com.example.domain.usecase.GetTokenFromLocalStorageUseCase
 import com.example.promath.ui.screen.LoginScreen
 import com.example.promath.ui.screen.MainScreen
@@ -42,6 +43,10 @@ import com.example.promath.ui.screen.RatingScreen
 import com.example.promath.ui.screen.RegistrationScreen
 import com.example.promath.ui.theme.ProMathTheme
 import com.example.promath.ui.themenew.palette
+import com.example.promath.ui.themenew.paletteCupcake
+import com.example.promath.ui.themenew.paletteDark
+import com.example.promath.ui.themenew.paletteEmerald
+import com.example.promath.ui.themenew.paletteValentine
 import com.example.promath.viewmodel.LoginViewModel
 import com.example.promath.viewmodel.MainViewModel
 import com.example.promath.viewmodel.ProfileViewModel
@@ -56,9 +61,21 @@ class MainActivity : ComponentActivity() {
     private val registrationViewModel by viewModel<RegistrationViewModel>()
     private val getTokenFromLocalStorageUseCase by inject<GetTokenFromLocalStorageUseCase>()
     private val profileViewModel by inject<ProfileViewModel>()
+    private val getCurrentThemeUseCase by inject<GetCurrentThemeUseCase>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        val theme = getCurrentThemeUseCase.execute()
+        if (theme.status == ResultModel.Status.SUCCESS) {
+            palette = when (theme.data) {
+                "dark" -> paletteDark
+                "cupcake" -> paletteCupcake
+                "valentine" -> paletteValentine
+                "emerald" -> paletteEmerald
+                else -> paletteDark
+            }
+        }
 
         setContent {
             ProMathTheme {
