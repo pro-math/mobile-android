@@ -19,4 +19,9 @@ class ApiRepositoryImpl(
         return apiRemoteSource.registrationUser(login = login, password = password)
     }
 
+    override suspend fun getUser(token: String): ResultModel<UserModel> = apiRemoteSource.getUser(token = token)
+    override suspend fun createGameSession(gameSession: GameSession, token: String) {
+        apiRemoteSource.postGameSession(gameSession, token)
+    }
+
 }
