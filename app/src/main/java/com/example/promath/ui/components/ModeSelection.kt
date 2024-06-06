@@ -1,5 +1,6 @@
 package com.example.promath.ui.components
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -99,6 +100,7 @@ private fun SelectionTab(selectionName: String, elements: List<String>, vm: Main
             "Count" -> vm.currentCount.observeAsState()
             else -> vm.currentDifficulty.observeAsState()
         }
+        val selectedOperations by vm.currentOperation.observeAsState()
 
         Text(
             text = selectionName,
@@ -111,22 +113,48 @@ private fun SelectionTab(selectionName: String, elements: List<String>, vm: Main
                 .background(color = palette.base300, shape = RoundedCornerShape(10.dp))
         ) {
             for(i in elements.indices) {
-                val containerColor = if (i == selectedItem) {
+                var containerColor = if (i == selectedItem) {
                     palette.primary
                 } else {
                     palette.base300
                 }
-                val contentColor = if (i == selectedItem) {
+                var contentColor = if (i == selectedItem) {
                     palette.primaryContent
                 } else {
                     palette.baseContent
+                }
+                if (selectionName == "Operations") {
+                    containerColor = if (selectedOperations!![i]) {
+                        palette.primary
+                    } else {
+                        palette.base300
+                    }
+                    contentColor = if (selectedOperations!![i]) {
+                        palette.primaryContent
+                    } else {
+                        palette.baseContent
+                    }
                 }
                 item {
                     Button(
                         onClick = {
                             when (selectionName) {
                                 "Difficulty" -> vm.currentDifficulty.postValue(i)
-                                "Operations" -> vm.currentOperation.postValue(i)
+                                "Operations" -> {
+                                    var operations: MutableList<Boolean> = mutableListOf(false, false, false, false)
+                                    for (ind in selectedOperations!!.indices) {
+                                        if (ind == i) {
+                                            operations[ind] = !selectedOperations!![ind]
+                                        } else {
+                                            operations[ind] = selectedOperations!![ind]
+                                        }
+                                    }
+                                    if (operations == mutableListOf(false, false, false, false)) {
+                                        operations = mutableListOf(true, true, true, true)
+                                    }
+                                    Log.i("TEST_OPERATIONS", operations.toString())
+                                    vm.currentOperation.postValue(operations)
+                                }
                                 "Type" -> vm.currentType.postValue(i)
                                 "Time" -> vm.currentTime.postValue(i)
                                 "Count" -> vm.currentCount.postValue(i)
