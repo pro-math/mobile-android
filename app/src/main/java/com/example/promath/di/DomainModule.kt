@@ -4,6 +4,7 @@ import com.example.data.repository.ApiRepositoryImpl
 import com.example.data.repository.LocalStorageRepositoryImpl
 import com.example.domain.usecase.CreateGameSessionUseCase
 import com.example.domain.usecase.GenerateExampleUseCase
+import com.example.domain.usecase.GetCurrentThemeUseCase
 import com.example.domain.usecase.GetTokenFromLocalStorageUseCase
 import com.example.domain.usecase.GetUserUseCase
 import com.example.domain.usecase.LoginUserUseCase
@@ -26,5 +27,7 @@ val domainModule = module {
     factory<GetUserUseCase> { GetUserUseCase(apiRepository = get<ApiRepositoryImpl>()) }
 
     factory<CreateGameSessionUseCase> { CreateGameSessionUseCase(apiRepository = get<ApiRepositoryImpl>()) }
+
+    factory<GetCurrentThemeUseCase> { GetCurrentThemeUseCase(localStorageRepository = get<LocalStorageRepositoryImpl>()) }
 
 }
