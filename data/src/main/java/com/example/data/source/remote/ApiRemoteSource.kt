@@ -1,6 +1,52 @@
 package com.example.data.source.remote
 
-class ApiRemoteSource {
+import android.util.Log
+import com.example.data.models.AuthModel
+import com.example.data.models.DetailModel
+import com.example.data.models.ExampleApiModel
+import com.example.data.models.GameSessionModel
+import com.example.data.models.LoginModel
+import com.example.data.models.UserApiModel
+import com.example.domain.models.ExampleModel
+import com.example.domain.models.GameMode
+import com.example.domain.models.GameSession
+import com.example.domain.models.ResultModel
+import com.example.domain.models.UserModel
+import io.ktor.client.HttpClient
+import io.ktor.client.call.body
+import io.ktor.client.engine.android.Android
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.client.plugins.logging.LogLevel
+import io.ktor.client.plugins.logging.Logging
+import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.client.request.parameter
+import io.ktor.client.request.post
+import io.ktor.client.request.setBody
+import io.ktor.client.request.url
+import io.ktor.http.ContentType
+import io.ktor.http.contentType
+import io.ktor.serialization.kotlinx.json.json
+import io.ktor.util.InternalAPI
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import org.json.JSONObject
+import java.lang.Exception
+
+class ApiRemoteSource() {
+
+    private val httpClient = HttpClient(Android) {
+        install(Logging) {
+            level = LogLevel.ALL
+        }
+        install(ContentNegotiation) {
+            json(
+                Json {
+                    ignoreUnknownKeys = true
+                }
+            )
+        }
+    }
 
     suspend fun loginUser(
         login: String,
