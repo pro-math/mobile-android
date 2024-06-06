@@ -1,6 +1,5 @@
 package com.example.promath.ui.screen
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,19 +20,22 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.BlendMode.Companion.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import com.example.promath.ui.themenew.palette
+import com.example.promath.viewmodel.ProfileViewModel
 
 @Composable
-fun ProfileScreen(navController: NavController) {
+fun ProfileScreen(navController: NavController, vm: ProfileViewModel) {
+    vm.loadUserData()
+    val userData by vm.userData.observeAsState()
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -41,26 +43,44 @@ fun ProfileScreen(navController: NavController) {
             .padding(16.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        ProfileCard()
+        ProfileCard(vm = vm)
         Spacer(modifier = Modifier.height(8.dp))
-        Button(
-            onClick = {
-                navController.navigate("login_screen")
-            },
-            colors = ButtonDefaults.buttonColors(
-                containerColor = palette.primary,
-                contentColor = palette.primaryContent
-            ),
-            shape = RoundedCornerShape(10.dp),
-            modifier = Modifier.fillMaxWidth()
-        ) {
-            Text(text = "Login")
+        if (userData == null) {
+            Button(
+                onClick = {
+                    navController.navigate("login_screen")
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = palette.primary,
+                    contentColor = palette.primaryContent
+                ),
+                shape = RoundedCornerShape(10.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Login")
+            }
+        } else {
+            Button(
+                onClick = {
+                    vm.logoutUser()
+                },
+                colors = ButtonDefaults.buttonColors(
+                    containerColor = palette.primary,
+                    contentColor = palette.primaryContent
+                ),
+                shape = RoundedCornerShape(10.dp),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text(text = "Logout")
+            }
         }
     }
 }
 
 @Composable
-private fun ProfileCard() {
+private fun ProfileCard(vm: ProfileViewModel) {
+    val username by vm.username.observeAsState()
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -81,7 +101,7 @@ private fun ProfileCard() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
-                text = "Username",
+                text = username.toString(),
                 color = palette.baseContent,
                 fontSize = 16.sp
             )
@@ -95,5 +115,5 @@ private fun ProfileCard() {
 @Composable
 @Preview
 fun PreviewProfileScreen() {
-    ProfileScreen(rememberNavController())
+//    ProfileScreen(rememberNavController())
 }
