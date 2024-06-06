@@ -8,7 +8,7 @@ import org.koin.dsl.module
 
 val appModule = module {
 
-    viewModel<MainViewModel> { MainViewModel(exampleGenerator = get()) }
+    viewModel<MainViewModel> { MainViewModel(exampleGenerator = get(), createGameSessionUseCase = get(), getTokenFromLocalStorageUseCase = get()) }
 
     viewModel<LoginViewModel> { LoginViewModel(loginUserUseCase = get(), setTokenToLocalStorageUseCase = get()) }
 

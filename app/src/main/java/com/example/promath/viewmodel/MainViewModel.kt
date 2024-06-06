@@ -11,7 +11,9 @@ import com.example.generationOfExamples.TypeOperation
 // писька
 
 class MainViewModel(
-    private val exampleGenerator: ExampleGenerator
+    private val exampleGenerator: ExampleGenerator,
+    private val createGameSessionUseCase: CreateGameSessionUseCase,
+    private val getTokenFromLocalStorageUseCase: GetTokenFromLocalStorageUseCase
 ): ViewModel() {
 
     private val _example: MutableLiveData<ExampleModel> = MutableLiveData()
