@@ -38,6 +38,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.example.domain.models.ResultModel
 import com.example.promath.ui.themenew.palette
+import com.example.promath.utils.isValidLogin
+import com.example.promath.utils.isValidPassword
 import com.example.promath.viewmodel.LoginViewModel
 import com.example.promath.viewmodel.RegistrationViewModel
 
@@ -168,6 +170,12 @@ fun RegistrationCard(vm: RegistrationViewModel, navController: NavController) {
     if (registrationResult != null && registrationResult!!.status == ResultModel.Status.SUCCESS) {
         navController.navigate("main_screen")
     }
+    var isValidLogin by remember {
+        mutableStateOf(true)
+    }
+    var isValidPassword by remember {
+        mutableStateOf(true)
+    }
 
     Column(
         modifier = Modifier
@@ -181,7 +189,11 @@ fun RegistrationCard(vm: RegistrationViewModel, navController: NavController) {
             Text(text = registrationResult!!.message.toString(), color = palette.error, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
         }
         if (!correctPassword) {
-            Text(text = "Incorrect password", color = palette.error, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+            Text(text = "Password mismatch", color = palette.error, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+        } else if (!isValidLogin) {
+            Text(text = "The login must be longer than 2 and shorter than 26 characters. Consist of Latin letters, numbers and -, _, .", color = palette.error, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+        } else if (!isValidPassword) {
+            Text(text = "The password must be longer than 7 and shorter than 26 characters. Must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character", color = palette.error, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
         }
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
@@ -279,10 +291,21 @@ fun RegistrationCard(vm: RegistrationViewModel, navController: NavController) {
         Button(
             onClick = {
                 if (password == password2) {
-                    vm.registrationUser(
-                        login = login,
-                        password = password
-                    )
+                    correctPassword = true
+                    if (isValidLogin(login)) {
+                        isValidLogin = true
+                        if (isValidPassword(password)) {
+                            isValidPassword = true
+                            vm.registrationUser(
+                                login = login,
+                                password = password
+                            )
+                        } else {
+                            isValidPassword = false
+                        }
+                    } else {
+                        isValidLogin = false
+                    }
                 } else {
                     correctPassword = false
                 }
