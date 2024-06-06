@@ -44,6 +44,7 @@ import com.example.promath.ui.theme.ProMathTheme
 import com.example.promath.ui.themenew.palette
 import com.example.promath.viewmodel.LoginViewModel
 import com.example.promath.viewmodel.MainViewModel
+import com.example.promath.viewmodel.ProfileViewModel
 import com.example.promath.viewmodel.RegistrationViewModel
 import org.koin.android.ext.android.inject
 import org.koin.androidx.viewmodel.ext.android.viewModel
@@ -54,6 +55,7 @@ class MainActivity : ComponentActivity() {
     private val loginViewModel by viewModel<LoginViewModel>()
     private val registrationViewModel by viewModel<RegistrationViewModel>()
     private val getTokenFromLocalStorageUseCase by inject<GetTokenFromLocalStorageUseCase>()
+    private val profileViewModel by inject<ProfileViewModel>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -133,11 +135,7 @@ class MainActivity : ComponentActivity() {
                         }
                     }
                 ) {
-                    val startScreen = if (getTokenFromLocalStorageUseCase.execute().status == ResultModel.Status.FAILURE) {
-                        "login_screen"
-                    } else {
-                        "main_screen"
-                    }
+                    val startScreen = "main_screen"
                     Column(
                         modifier = Modifier.padding(bottom = it.calculateBottomPadding())
                     ) {
@@ -164,7 +162,7 @@ class MainActivity : ComponentActivity() {
                             composable(
                                 route = "profile_screen"
                             ) {
-                                ProfileScreen(navController = navController)
+                                ProfileScreen(navController = navController, vm = profileViewModel)
                             }
                             composable(
                                 route = "login_screen"
