@@ -12,13 +12,15 @@ class ExampleGenerator {
     }
 
     fun generateExample(
-        typeOperation: TypeOperation,
+        typesOperations: List<TypeOperation>,
         border1: Int,
         border2: Int
     ): ExampleModel {
         var number1: Int = 0
         var number2: Int = 0
         var answer: Int = 0
+
+        val typeOperation = typesOperations.random()
 
         if (typeOperation != TypeOperation.DIVIDE) {
             number1 = (border1..border2).random()
