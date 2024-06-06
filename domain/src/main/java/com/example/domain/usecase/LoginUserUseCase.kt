@@ -11,6 +11,6 @@ class LoginUserUseCase(
     suspend fun login(
         login: String,
         password: String
-    ): Result<String> = apiRepository.loginUser(login = login, password = password)
+    ): ResultModel<String> = apiRepository.loginUser(login = login, password = password)
 
 }
