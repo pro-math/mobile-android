@@ -11,6 +11,6 @@ class RegistrationUserUseCase(
     suspend fun registration(
         login: String,
         password: String
-    ): Result<String> = apiRepository.registrationUser(login = login, password = password)
+    ): ResultModel<String> = apiRepository.registrationUser(login = login, password = password)
 
 }
