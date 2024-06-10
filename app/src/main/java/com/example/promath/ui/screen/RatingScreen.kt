@@ -62,7 +62,9 @@ fun RatingScreen(vm: RatingViewModel) {
         ) {
             Text(text = "Рейтинговая таблица", color = palette.baseContent, fontWeight = FontWeight.SemiBold, fontSize = 20.sp, modifier = Modifier.weight(1F))
             IconButton(onClick = {
-                vm.loadRating()
+                vm.offset = 0
+                vm.isLastGet = false
+                vm.loadRating(false)
             }) {
                 Icon(imageVector = Icons.Default.Refresh, contentDescription = null, tint = palette.baseContent)
             }
@@ -77,35 +79,35 @@ fun RatingScreen(vm: RatingViewModel) {
     ) {
         vm.offset = 0
         vm.isLastGet = false
-        vm.loadRating()
+        vm.loadRating(false)
     }
     LaunchedEffect(
         currentCount
     ) {
         vm.offset = 0
         vm.isLastGet = false
-        vm.loadRating()
+        vm.loadRating(false)
     }
     LaunchedEffect(
         currentDifficulty
     ) {
         vm.offset = 0
         vm.isLastGet = false
-        vm.loadRating()
+        vm.loadRating(false)
     }
     LaunchedEffect(
         currentType
     ) {
         vm.offset = 0
         vm.isLastGet = false
-        vm.loadRating()
+        vm.loadRating(false)
     }
     LaunchedEffect(
         currentTime
     ) {
         vm.offset = 0
         vm.isLastGet = false
-        vm.loadRating()
+        vm.loadRating(false)
     }
 
 }

@@ -32,7 +32,9 @@ class RatingViewModel(
 
     var isLastGet: Boolean = false
 
-    fun loadRating() {
+    fun loadRating(typeAdd: Boolean) {
+        Log.i("TEST PAGINATION RATING", isLastGet.toString())
+        Log.i("TEST PAGINATION RATING", offset.toString())
 
         val mathOperations: MutableList<String> = mutableListOf()
         if (currentOperation.value!![0]) {
@@ -85,7 +87,11 @@ class RatingViewModel(
             )
             if (result.status == ResultModel.Status.SUCCESS) {
                 Log.i("TEST RATING", result.data.toString())
-                _listRating.postValue(_listRating.value!! + result.data!!)
+                if (typeAdd) {
+                    _listRating.postValue(_listRating.value!! + result.data!!)
+                } else {
+                    _listRating.postValue(result.data!!)
+                }
                 if (result.data!!.size != 50) {
                     isLastGet = true
                 }
@@ -119,7 +125,7 @@ class RatingViewModel(
             "Time" -> currentTime.postValue(i)
             "Count" -> currentCount.postValue(i)
         }
-        loadRating()
+//        loadRating()
     }
 
 }

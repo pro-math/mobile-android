@@ -50,7 +50,7 @@ fun RatingList(vm: RatingViewModel) {
             .collect { lastVisibleIndex ->
                 if (lastVisibleIndex == listRating!!.size - 1 && !vm.isLastGet) {
                     vm.offset += 50
-                    vm.loadRating()
+                    vm.loadRating(typeAdd = true)
                 }
             }
     }

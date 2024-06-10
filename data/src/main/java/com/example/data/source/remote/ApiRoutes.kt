@@ -2,7 +2,7 @@ package com.example.data.source.remote
 
 object ApiRoutes {
 
-    private const val BASE_URL = "https://6c2f-176-59-11-211.ngrok-free.app/api/v1"
+    private const val BASE_URL = "https://0331-94-25-191-98.ngrok-free.app/api/v1"
     const val USERS = "$BASE_URL/users"
     const val USER_ME = "$USERS/me/"
     const val USER_REGISTRATION = "$USERS/register"
