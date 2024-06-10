@@ -1,6 +1,5 @@
 package com.example.data.models
 
-import com.example.domain.models.ExampleModel
 import kotlinx.serialization.Serializable
 
 @Serializable
@@ -20,5 +19,5 @@ data class ExampleApiModel(
     val number1: Int,
     val number2: Int,
     val correct_answer: Int,
-    val answer: Int
+    val user_answer: Int
 )

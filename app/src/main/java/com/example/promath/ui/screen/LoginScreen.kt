@@ -44,7 +44,7 @@ fun LoginScreen(vm: LoginViewModel, navController: NavController) {
                 contentColor = palette.accentContent
             )
         ) {
-            Text(text = "Registration")
+            Text(text = "Зарегестрироваться")
         }
     }
 }

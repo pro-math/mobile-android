@@ -40,15 +40,30 @@ class MainViewModel(
     val currentTime: MutableLiveData<Int> = MutableLiveData(0)
     val currentCount: MutableLiveData<Int> = MutableLiveData(0)
 
-    private val _time: MutableLiveData<Int> = MutableLiveData()
+    private val _time: MutableLiveData<Int> = MutableLiveData(0)
     val time: LiveData<Int> = _time
 
     val isStopGame: MutableLiveData<Boolean> = MutableLiveData(false)
 
-    private var timer: CountDownTimer = object : CountDownTimer(30000, 1000) {
+    private var timerDown: CountDownTimer = object : CountDownTimer(30000, 1000) {
 
         override fun onTick(millisUntilFinished: Long) {
             _time.postValue((millisUntilFinished / 1000).toInt())
+        }
+
+        override fun onFinish() {
+            Log.i("ON FINISH TIMER", "FINISH")
+            createSession()
+            isStopGame.postValue(true)
+        }
+    }
+
+    val isStartCreateSession: MutableLiveData<Boolean> = MutableLiveData(false)
+
+    var timerUp: CountDownTimer = object : CountDownTimer(Long.MAX_VALUE, 1000) {
+
+        override fun onTick(millisUntilFinished: Long) {
+            _time.postValue(_time.value!! + 1)
         }
 
         override fun onFinish() {
@@ -58,37 +73,46 @@ class MainViewModel(
 
     private val examplesList: MutableList<com.example.domain.models.ExampleModel> = mutableListOf()
 
-    fun startTimer() {
+    fun startTimerTime() {
         val s = when (currentTime.value) {
-            0 -> 30
-            1 -> 60
-            2 -> 90
-            else -> 30
+            0 -> 15
+            1 -> 30
+            2 -> 60
+            else -> 90
         }
         _time.postValue(s)
         Log.i("TIMER START", s.toString())
 
 
-        timer = object : CountDownTimer((s * 1000).toLong(), 1000) {
+        timerDown = object : CountDownTimer((s * 1000).toLong(), 1000) {
 
             override fun onTick(millisUntilFinished: Long) {
                 _time.postValue((millisUntilFinished / 1000).toInt())
             }
 
             override fun onFinish() {
+                createSession()
                 isStopGame.postValue(true)
             }
         }
 
-        timer.start()
+        timerDown.start()
+    }
+
+    fun startTimeCount() {
+        timerUp.start()
     }
 
     fun addCountSuccessAnswer() {
-        _countSuccessAnswer.postValue(_countSuccessAnswer.value!! + 1)
+        Log.i("TEST CREATE SESSION SUCCESS", _countSuccessAnswer.value.toString())
+        _countSuccessAnswer.value = _countSuccessAnswer.value!! + 1
+//        _countSuccessAnswer.postValue(_countSuccessAnswer.value!! + 1)
+        Log.i("TEST CREATE SESSION SUCCESS", _countSuccessAnswer.value.toString())
     }
 
     fun addCountExample(exampleModel: ExampleModel, userAns: String) {
-        _countExamples.postValue(_countExamples.value!! + 1)
+        _countExamples.value = _countExamples.value!! + 1
+//        _countExamples.postValue(_countExamples.value!! + 1)
         examplesList.add(com.example.domain.models.ExampleModel(
             typeOperation = when (exampleModel.typeOperation) {
                 TypeOperation.PLUS -> "+"
@@ -105,50 +129,76 @@ class MainViewModel(
                 -1
             }
         ))
+        Log.i("TEST CREATE SESSION ALL", _countExamples.value.toString())
     }
 
     fun createSession() {
         val token = getTokenFromLocalStorageUseCase.execute()
+        val gameMode = if (currentType.value == 0) {
+            GameMode.TimeMode
+        } else {
+            GameMode.CountMode
+        }
+        val duration = when (currentType.value) {
+            0 -> {
+                when (currentTime.value) {
+                    0 -> 15
+                    1 -> 30
+                    2 -> 60
+                    else -> 90
+                }
+            }
+            else -> {
+                if (time.value != null) {
+                    (time.value!!).toLong()
+                } else {
+                    0
+                }
+            }
+        }
+        Log.i("TEST CREATE GAME SESSION", duration.toString())
+        val mathOperations = buildList {
+            if (currentOperation.value!![0]) {
+                add("+")
+            }
+            if (currentOperation.value!![1]) {
+                add("-")
+            }
+            if (currentOperation.value!![2]) {
+                add("*")
+            }
+            if (currentOperation.value!![3]) {
+                add("/")
+            }
+        }
+        val examplesCategory = if (currentDifficulty.value == 0) {
+            10
+        } else if (currentDifficulty.value == 1) {
+            15
+        } else if (currentDifficulty.value == 2) {
+            20
+        } else {
+            30
+        }
 
         if (token.status == ResultModel.Status.SUCCESS) {
             viewModelScope.launch {
                 createGameSessionUseCase.create(
                     gameSession = GameSession(
-                        gameMode = if (currentType.value == 0) {
-                            GameMode.TimeMode
-                        } else {
-                            GameMode.CountMode
-                        },
-                        duration = 0,
-                        mathOperations = buildList {
-                            if (currentOperation.value!![0]) {
-                                add("+")
-                            }
-                            if (currentOperation.value!![1]) {
-                                add("-")
-                            }
-                            if (currentOperation.value!![2]) {
-                                add("*")
-                            }
-                            if (currentOperation.value!![3]) {
-                                add("/")
-                            }
-                        },
-                        examplesCategory = if (currentDifficulty.value == 0) {
-                            10
-                        } else if (currentDifficulty.value == 1) {
-                            100
-                        } else {
-                            1000
-                        },
+                        gameMode = gameMode,
+                        duration = duration,
+                        mathOperations = mathOperations,
+                        examplesCategory = examplesCategory,
                         examples = examplesList,
                         totalCount = _countExamples.value!!,
                         correctCount = _countSuccessAnswer.value!!
                     ),
                     token = token.data!!
                 )
+                examplesList.clear()
             }
         }
+        Log.i("TEST CREATE SESSION FINAL", "${_countExamples.value}, ${_countSuccessAnswer.value}")
     }
 
     fun loadExample() {
@@ -182,11 +232,14 @@ class MainViewModel(
             }
         )
         _example.postValue(example)
+//        addCountExample(exampleModel = example, userAns = "0")
 //        _countExamples.postValue(_countExamples.value!! + 1)
     }
 
     fun clearAnswers() {
-        timer.cancel()
+        timerUp.cancel()
+        timerDown.cancel()
+        _time.postValue(0)
         isStopGame.postValue(false)
         _countExamples.postValue(0)
         _countSuccessAnswer.postValue(0)

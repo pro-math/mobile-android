@@ -1,6 +1,7 @@
 package com.example.promath.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -38,20 +39,21 @@ fun TabAnswers(vm :MainViewModel) {
         0
     }
 
-    Row(
+    Column(
         modifier = Modifier
             .fillMaxWidth()
             .background(color = palette.base200, shape = RoundedCornerShape(size = 10.dp))
             .padding(16.dp)
     ) {
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Row(
+            horizontalArrangement = Arrangement.Center,
             modifier = Modifier
                 .padding(4.dp)
-                .weight(1F)
+                .fillMaxWidth()
+//                .weight(1F)
         ) {
             Text(
-                text = "Percent",
+                text = "Процент: ",
                 color = palette.baseContent,
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp
@@ -63,14 +65,15 @@ fun TabAnswers(vm :MainViewModel) {
                 fontSize = 16.sp
             )
         }
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Row(
+            horizontalArrangement = Arrangement.Center,
             modifier = Modifier
                 .padding(4.dp)
-                .weight(1F)
+                .fillMaxWidth()
+//                .weight(1F)
         ) {
             Text(
-                text = "Success",
+                text = "Правильно: ",
                 color = palette.baseContent,
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp
@@ -82,14 +85,15 @@ fun TabAnswers(vm :MainViewModel) {
                 fontSize = 16.sp
             )
         }
-        Column(
-            horizontalAlignment = Alignment.CenterHorizontally,
+        Row(
+            horizontalArrangement = Arrangement.Center,
             modifier = Modifier
                 .padding(4.dp)
-                .weight(1F)
+                .fillMaxWidth()
+//                .weight(1F)
         ) {
             Text(
-                text = "Mistakes",
+                text = "Не правильно: ",
                 color = palette.baseContent,
                 fontWeight = FontWeight.Medium,
                 fontSize = 16.sp
@@ -110,8 +114,8 @@ private fun TabAnswersItem(
     valueText: String,
     valueColor: Color,
 ) {
-    Column(
-        horizontalAlignment = Alignment.CenterHorizontally,
+    Row(
+        verticalAlignment = Alignment.CenterVertically,
         modifier = Modifier.padding(4.dp)
     ) {
         Text(

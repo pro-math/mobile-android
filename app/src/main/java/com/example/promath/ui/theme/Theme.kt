@@ -13,7 +13,14 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalView
 import androidx.core.view.WindowCompat
+import com.example.domain.models.ResultModel
+import com.example.domain.usecase.GetCurrentThemeUseCase
 import com.example.promath.ui.themenew.palette
+import com.example.promath.ui.themenew.paletteCupcake
+import com.example.promath.ui.themenew.paletteDark
+import com.example.promath.ui.themenew.paletteEmerald
+import com.example.promath.ui.themenew.paletteValentine
+import org.koin.android.ext.android.inject
 
 private val LightColorScheme = darkColorScheme(
     background = Background,
@@ -37,6 +44,7 @@ private val DarkColorScheme = darkColorScheme(
 fun ProMathTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     dynamicColor: Boolean = true,
+    getCurrentThemeUseCase: GetCurrentThemeUseCase,
     content: @Composable () -> Unit
 ) {
     val colorScheme = when {
@@ -56,7 +64,16 @@ fun ProMathTheme(
             WindowCompat.getInsetsController(window, view).isAppearanceLightStatusBars = darkTheme
         }
     }
-
+    val theme = getCurrentThemeUseCase.execute()
+    if (theme.status == ResultModel.Status.SUCCESS) {
+        palette = when (theme.data) {
+            "dark" -> paletteDark
+            "cupcake" -> paletteCupcake
+            "valentine" -> paletteValentine
+            "emerald" -> paletteEmerald
+            else -> paletteDark
+        }
+    }
     MaterialTheme(
         colorScheme = colorScheme,
         typography = Typography,

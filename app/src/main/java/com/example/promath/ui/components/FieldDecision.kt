@@ -64,7 +64,7 @@ fun FieldDecision(vm: MainViewModel) {
 
     if (isStopGame == true) {
         Log.i("TEST CREATE GAME SESSION", "stop game")
-        vm.createSession()
+//        vm.createSession()
     }
 
     Log.i("TEST GENERATE EXAMPLE", vm.example.value.toString())
@@ -83,7 +83,7 @@ fun FieldDecision(vm: MainViewModel) {
             horizontalArrangement = Arrangement.End
         ) {
             Text(
-                text = "time: $time s",
+                text = "$time с",
                 color = palette.baseContent,
                 fontSize = 20.sp
             )
@@ -114,19 +114,23 @@ fun FieldDecision(vm: MainViewModel) {
                             isErrorAnswer = true
                         }
                         vm.addCountExample(exampleModel = example!!, textFieldValue)
+//                        vm.editUserAns(userAns = textFieldValue)
                         textFieldValue = ""
                         previousExample = example!!.exampleString + " " + example!!.answer.toString()
                         if (currentType == 0) {
                             vm.loadExample()
                         } else {
                             if (countExamples!! < when (currentCount) {
-                                0 -> 9
-                                1 -> 99
-                                else -> 9
+                                0 -> 10
+                                1 -> 15
+                                2 -> 20
+                                else -> 30
                             }) {
                                 vm.loadExample()
                             } else {
+                                vm.timerUp.cancel()
                                 vm.isStopGame.postValue(true)
+                                vm.createSession()
                             }
                         }
                     }
@@ -147,7 +151,10 @@ fun FieldDecision(vm: MainViewModel) {
                     errorIndicatorColor = palette.error,
                     errorContainerColor = Color(0x00FFFFFF),
                     errorTextColor = palette.baseContent,
-                    focusedContainerColor = Color(0x00FFFFFF)
+                    focusedContainerColor = Color(0x00FFFFFF),
+                    disabledTextColor = palette.baseContent,
+                    disabledContainerColor = palette.base300,
+                    disabledIndicatorColor = palette.base300
                 ),
                 maxLines = 1
             )

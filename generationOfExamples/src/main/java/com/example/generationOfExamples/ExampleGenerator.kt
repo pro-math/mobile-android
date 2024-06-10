@@ -29,9 +29,6 @@ class ExampleGenerator {
             number2 = (border1..border2).random()
             answer = (1..(border2 / number2)).random()
             number1 = answer * number2
-            if (number1 < border1) {
-                number1 = border1
-            }
         }
 
         answer = when (typeOperation) {

@@ -2,11 +2,16 @@ package com.example.data.source.remote
 
 object ApiRoutes {
 
-    private const val BASE_URL = "https://4368-83-171-69-39.ngrok-free.app/api/v1"
+    private const val BASE_URL = "https://6c2f-176-59-11-211.ngrok-free.app/api/v1"
     const val USERS = "$BASE_URL/users"
-    const val USER_ME = "$USERS/me"
+    const val USER_ME = "$USERS/me/"
     const val USER_REGISTRATION = "$USERS/register"
     const val USER_LOGIN = "$USERS/token"
     const val GAME_SESSIONS = "$BASE_URL/game_sessions/"
+    const val RATING = "$BASE_URL/ratings/"
+    const val HISTORY = "$BASE_URL/ratings/me/"
+    const val CHART = "$BASE_URL/chart/me/"
+    const val ACHIEVEMENT = "$BASE_URL/achievements/"
+    const val USER_ACHIEVEMENT = "$BASE_URL/achievements/me/"
 
 }

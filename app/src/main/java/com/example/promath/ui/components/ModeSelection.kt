@@ -34,6 +34,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.promath.ui.themenew.palette
 import com.example.promath.viewmodel.MainViewModel
+import com.example.promath.viewmodel.ProgressViewModel
+import com.example.promath.viewmodel.RatingViewModel
+import com.example.promath.viewmodel.UserRatingViewModel
 
 @Composable
 fun ModeSelection(vm: MainViewModel) {
@@ -57,7 +60,7 @@ fun ModeSelection(vm: MainViewModel) {
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
             Text(
-                text = "Mode selection",
+                text = "Выбор режима",
                 color = palette.baseContent,
                 fontWeight = FontWeight.SemiBold,
                 modifier = Modifier.weight(1F)
@@ -69,23 +72,71 @@ fun ModeSelection(vm: MainViewModel) {
             }
         }
         if (isOpen) {
-            SelectionTab(selectionName = "Difficulty", elements = listOf("10", "100", "1000"), vm = vm)
+            SelectionTab(selectionName = "Сложность", elements = listOf("10", "100", "1000"), vm = vm)
             Spacer(modifier = Modifier.height(8.dp))
-            SelectionTab(selectionName = "Operations", elements = listOf("+", "-", "*", "/"), vm = vm)
+            SelectionTab(selectionName = "Операции", elements = listOf("+", "-", "*", "/"), vm = vm)
             Spacer(modifier = Modifier.height(8.dp))
-            SelectionTab(selectionName = "Type", elements = listOf("Time", "Count"), vm = vm)
+            SelectionTab(selectionName = "Тип", elements = listOf("На время", "На количество"), vm = vm)
             Spacer(modifier = Modifier.height(8.dp))
             if (currentType == 0) {
-                SelectionTab(selectionName = "Time", elements = listOf("30s", "60s", "90s"), vm = vm)
+                SelectionTab(selectionName = "Время", elements = listOf("15 с", "30 с", "60 с", "90 с"), vm = vm)
             } else {
-                SelectionTab(selectionName = "Count", elements = listOf("10", "100"), vm = vm)
+                SelectionTab(selectionName = "Количество", elements = listOf("10", "15", "20", "30"), vm = vm)
             }
         }
     }
 }
 
 @Composable
-private fun SelectionTab(selectionName: String, elements: List<String>, vm: MainViewModel) {
+fun ModeSelectionRating(vm: RatingViewModel) {
+
+    val currentDifficulty by vm.currentDifficulty.observeAsState()
+    val currentOperation by vm.currentOperation.observeAsState()
+    val currentType by vm.currentType.observeAsState()
+    var isOpen by remember {
+        mutableStateOf(false)
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = palette.base200, shape = RoundedCornerShape(10.dp))
+            .clickable {
+                isOpen = !isOpen
+            }
+            .animateContentSize()
+            .padding(16.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "Выбор режима",
+                color = palette.baseContent,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1F)
+            )
+            if (isOpen) {
+                Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = null, tint = palette.baseContent)
+            } else {
+                Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null, tint = palette.baseContent)
+            }
+        }
+        if (isOpen) {
+            SelectionTabRating(selectionName = "Сложность", elements = listOf("10", "100", "1000"), vm = vm)
+            Spacer(modifier = Modifier.height(8.dp))
+            SelectionTabRating(selectionName = "Операции", elements = listOf("+", "-", "*", "/"), vm = vm)
+            Spacer(modifier = Modifier.height(8.dp))
+            SelectionTabRating(selectionName = "Тип", elements = listOf("На время", "На количество"), vm = vm)
+            Spacer(modifier = Modifier.height(8.dp))
+            if (currentType == 0) {
+                SelectionTabRating(selectionName = "Время", elements = listOf("15 с", "30 с", "60 с", "90 с"), vm = vm)
+            } else {
+                SelectionTabRating(selectionName = "Количество", elements = listOf("10", "15", "20", "30"), vm = vm)
+            }
+        }
+    }
+}
+
+@Composable
+private fun SelectionTabRating(selectionName: String, elements: List<String>, vm: RatingViewModel) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -93,11 +144,11 @@ private fun SelectionTab(selectionName: String, elements: List<String>, vm: Main
         verticalAlignment = Alignment.CenterVertically
     ) {
         val selectedItem by when (selectionName) {
-            "Difficulty" -> vm.currentDifficulty.observeAsState()
-            "Operations" -> vm.currentOperation.observeAsState()
-            "Type" -> vm.currentType.observeAsState()
-            "Time" -> vm.currentTime.observeAsState()
-            "Count" -> vm.currentCount.observeAsState()
+            "Сложность" -> vm.currentDifficulty.observeAsState()
+            "Операции" -> vm.currentOperation.observeAsState()
+            "Тип" -> vm.currentType.observeAsState()
+            "Время" -> vm.currentTime.observeAsState()
+            "Количество" -> vm.currentCount.observeAsState()
             else -> vm.currentDifficulty.observeAsState()
         }
         val selectedOperations by vm.currentOperation.observeAsState()
@@ -123,7 +174,7 @@ private fun SelectionTab(selectionName: String, elements: List<String>, vm: Main
                 } else {
                     palette.baseContent
                 }
-                if (selectionName == "Operations") {
+                if (selectionName == "Операции") {
                     containerColor = if (selectedOperations!![i]) {
                         palette.primary
                     } else {
@@ -139,8 +190,8 @@ private fun SelectionTab(selectionName: String, elements: List<String>, vm: Main
                     Button(
                         onClick = {
                             when (selectionName) {
-                                "Difficulty" -> vm.currentDifficulty.postValue(i)
-                                "Operations" -> {
+                                "Сложность" -> vm.currentDifficulty.postValue(i)
+                                "Операции" -> {
                                     var operations: MutableList<Boolean> = mutableListOf(false, false, false, false)
                                     for (ind in selectedOperations!!.indices) {
                                         if (ind == i) {
@@ -155,9 +206,102 @@ private fun SelectionTab(selectionName: String, elements: List<String>, vm: Main
                                     Log.i("TEST_OPERATIONS", operations.toString())
                                     vm.currentOperation.postValue(operations)
                                 }
-                                "Type" -> vm.currentType.postValue(i)
-                                "Time" -> vm.currentTime.postValue(i)
-                                "Count" -> vm.currentCount.postValue(i)
+                                "Тип" -> vm.currentType.postValue(i)
+                                "Время" -> vm.currentTime.postValue(i)
+                                "Количество" -> vm.currentCount.postValue(i)
+                            }
+//                            vm.loadRating()
+                        },
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = containerColor,
+                            contentColor = contentColor
+                        )
+                    ) {
+                        Text(
+                            text = elements[i]
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+private fun SelectionTab(selectionName: String, elements: List<String>, vm: MainViewModel) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = palette.base200),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val selectedItem by when (selectionName) {
+            "Сложность" -> vm.currentDifficulty.observeAsState()
+            "Операции" -> vm.currentOperation.observeAsState()
+            "Тип" -> vm.currentType.observeAsState()
+            "Время" -> vm.currentTime.observeAsState()
+            "Количество" -> vm.currentCount.observeAsState()
+            else -> vm.currentDifficulty.observeAsState()
+        }
+        val selectedOperations by vm.currentOperation.observeAsState()
+
+        Text(
+            text = selectionName,
+            color = palette.baseContent,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        LazyRow(
+            modifier = Modifier
+                .background(color = palette.base300, shape = RoundedCornerShape(10.dp))
+        ) {
+            for(i in elements.indices) {
+                var containerColor = if (i == selectedItem) {
+                    palette.primary
+                } else {
+                    palette.base300
+                }
+                var contentColor = if (i == selectedItem) {
+                    palette.primaryContent
+                } else {
+                    palette.baseContent
+                }
+                if (selectionName == "Операции") {
+                    containerColor = if (selectedOperations!![i]) {
+                        palette.primary
+                    } else {
+                        palette.base300
+                    }
+                    contentColor = if (selectedOperations!![i]) {
+                        palette.primaryContent
+                    } else {
+                        palette.baseContent
+                    }
+                }
+                item {
+                    Button(
+                        onClick = {
+                            when (selectionName) {
+                                "Сложность" -> vm.currentDifficulty.postValue(i)
+                                "Операции" -> {
+                                    var operations: MutableList<Boolean> = mutableListOf(false, false, false, false)
+                                    for (ind in selectedOperations!!.indices) {
+                                        if (ind == i) {
+                                            operations[ind] = !selectedOperations!![ind]
+                                        } else {
+                                            operations[ind] = selectedOperations!![ind]
+                                        }
+                                    }
+                                    if (operations == mutableListOf(false, false, false, false)) {
+                                        operations = mutableListOf(true, true, true, true)
+                                    }
+                                    Log.i("TEST_OPERATIONS", operations.toString())
+                                    vm.currentOperation.postValue(operations)
+                                }
+                                "Тип" -> vm.currentType.postValue(i)
+                                "Время" -> vm.currentTime.postValue(i)
+                                "Количество" -> vm.currentCount.postValue(i)
                             }
                         },
                         shape = RoundedCornerShape(10.dp),
@@ -180,4 +324,286 @@ private fun SelectionTab(selectionName: String, elements: List<String>, vm: Main
 @Preview
 fun PreviewModeSelection() {
 //    ModeSelection()
+}
+
+@Composable
+fun ModeSelectionProgress(vm: ProgressViewModel) {
+
+    val currentDifficulty by vm.currentDifficulty.observeAsState()
+    val currentOperation by vm.currentOperation.observeAsState()
+    val currentType by vm.currentType.observeAsState()
+    var isOpen by remember {
+        mutableStateOf(false)
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = palette.base200, shape = RoundedCornerShape(10.dp))
+            .clickable {
+                isOpen = !isOpen
+            }
+            .animateContentSize()
+            .padding(16.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "Настройка режима",
+                color = palette.baseContent,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1F)
+            )
+            if (isOpen) {
+                Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = null, tint = palette.baseContent)
+            } else {
+                Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null, tint = palette.baseContent)
+            }
+        }
+        if (isOpen) {
+            SelectionTabProgress(selectionName = "Сложность", elements = listOf("10", "100", "1000"), vm = vm)
+            Spacer(modifier = Modifier.height(8.dp))
+            SelectionTabProgress(selectionName = "Операции", elements = listOf("+", "-", "*", "/"), vm = vm)
+            Spacer(modifier = Modifier.height(8.dp))
+            SelectionTabProgress(selectionName = "Тип", elements = listOf("На время", "На количество"), vm = vm)
+            Spacer(modifier = Modifier.height(8.dp))
+            if (currentType == 0) {
+                SelectionTabProgress(selectionName = "Время", elements = listOf("15 с", "30 с", "60 с", "90 с"), vm = vm)
+            } else {
+                SelectionTabProgress(selectionName = "Количество", elements = listOf("10", "15", "20", "30"), vm = vm)
+            }
+        }
+    }
+}
+
+@Composable
+private fun SelectionTabProgress(selectionName: String, elements: List<String>, vm: ProgressViewModel) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = palette.base200),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val selectedItem by when (selectionName) {
+            "Сложность" -> vm.currentDifficulty.observeAsState()
+            "Операции" -> vm.currentOperation.observeAsState()
+            "Тип" -> vm.currentType.observeAsState()
+            "Время" -> vm.currentTime.observeAsState()
+            "Количество" -> vm.currentCount.observeAsState()
+            else -> vm.currentDifficulty.observeAsState()
+        }
+        val selectedOperations by vm.currentOperation.observeAsState()
+
+        Text(
+            text = selectionName,
+            color = palette.baseContent,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        LazyRow(
+            modifier = Modifier
+                .background(color = palette.base300, shape = RoundedCornerShape(10.dp))
+        ) {
+            for(i in elements.indices) {
+                var containerColor = if (i == selectedItem) {
+                    palette.primary
+                } else {
+                    palette.base300
+                }
+                var contentColor = if (i == selectedItem) {
+                    palette.primaryContent
+                } else {
+                    palette.baseContent
+                }
+                if (selectionName == "Операции") {
+                    containerColor = if (selectedOperations!![i]) {
+                        palette.primary
+                    } else {
+                        palette.base300
+                    }
+                    contentColor = if (selectedOperations!![i]) {
+                        palette.primaryContent
+                    } else {
+                        palette.baseContent
+                    }
+                }
+                item {
+                    Button(
+                        onClick = {
+                            when (selectionName) {
+                                "Сложность" -> vm.currentDifficulty.postValue(i)
+                                "Операции" -> {
+                                    var operations: MutableList<Boolean> = mutableListOf(false, false, false, false)
+                                    for (ind in selectedOperations!!.indices) {
+                                        if (ind == i) {
+                                            operations[ind] = !selectedOperations!![ind]
+                                        } else {
+                                            operations[ind] = selectedOperations!![ind]
+                                        }
+                                    }
+                                    if (operations == mutableListOf(false, false, false, false)) {
+                                        operations = mutableListOf(true, true, true, true)
+                                    }
+                                    Log.i("TEST_OPERATIONS", operations.toString())
+                                    vm.currentOperation.postValue(operations)
+                                }
+                                "Тип" -> vm.currentType.postValue(i)
+                                "Время" -> vm.currentTime.postValue(i)
+                                "Количество" -> vm.currentCount.postValue(i)
+                            }
+//                            vm.loadRating()
+                        },
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = containerColor,
+                            contentColor = contentColor
+                        )
+                    ) {
+                        Text(
+                            text = elements[i]
+                        )
+                    }
+                }
+            }
+        }
+    }
+}
+
+@Composable
+fun ModeSelectionUserRating(vm: UserRatingViewModel) {
+
+    val currentDifficulty by vm.currentDifficulty.observeAsState()
+    val currentOperation by vm.currentOperation.observeAsState()
+    val currentType by vm.currentType.observeAsState()
+    var isOpen by remember {
+        mutableStateOf(false)
+    }
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = palette.base200, shape = RoundedCornerShape(10.dp))
+            .clickable {
+                isOpen = !isOpen
+            }
+            .animateContentSize()
+            .padding(16.dp)
+    ) {
+        Row(verticalAlignment = Alignment.CenterVertically) {
+            Text(
+                text = "Настройка режима",
+                color = palette.baseContent,
+                fontWeight = FontWeight.SemiBold,
+                modifier = Modifier.weight(1F)
+            )
+            if (isOpen) {
+                Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = null, tint = palette.baseContent)
+            } else {
+                Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = null, tint = palette.baseContent)
+            }
+        }
+        if (isOpen) {
+            SelectionTabUserRating(selectionName = "Сложность", elements = listOf("10", "100", "1000"), vm = vm)
+            Spacer(modifier = Modifier.height(8.dp))
+            SelectionTabUserRating(selectionName = "Операции", elements = listOf("+", "-", "*", "/"), vm = vm)
+            Spacer(modifier = Modifier.height(8.dp))
+            SelectionTabUserRating(selectionName = "Тип", elements = listOf("На время", "На количество"), vm = vm)
+            Spacer(modifier = Modifier.height(8.dp))
+            if (currentType == 0) {
+                SelectionTabUserRating(selectionName = "Время", elements = listOf("15 с", "30 с", "60 с", "90 с"), vm = vm)
+            } else {
+                SelectionTabUserRating(selectionName = "Количество", elements = listOf("10", "15", "20", "30"), vm = vm)
+            }
+        }
+    }
+}
+
+@Composable
+private fun SelectionTabUserRating(selectionName: String, elements: List<String>, vm: UserRatingViewModel) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .background(color = palette.base200),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        val selectedItem by when (selectionName) {
+            "Сложность" -> vm.currentDifficulty.observeAsState()
+            "Операции" -> vm.currentOperation.observeAsState()
+            "Тип" -> vm.currentType.observeAsState()
+            "Время" -> vm.currentTime.observeAsState()
+            "Количество" -> vm.currentCount.observeAsState()
+            else -> vm.currentDifficulty.observeAsState()
+        }
+        val selectedOperations by vm.currentOperation.observeAsState()
+
+        Text(
+            text = selectionName,
+            color = palette.baseContent,
+            fontWeight = FontWeight.SemiBold
+        )
+        Spacer(modifier = Modifier.width(8.dp))
+        LazyRow(
+            modifier = Modifier
+                .background(color = palette.base300, shape = RoundedCornerShape(10.dp))
+        ) {
+            for(i in elements.indices) {
+                var containerColor = if (i == selectedItem) {
+                    palette.primary
+                } else {
+                    palette.base300
+                }
+                var contentColor = if (i == selectedItem) {
+                    palette.primaryContent
+                } else {
+                    palette.baseContent
+                }
+                if (selectionName == "Операции") {
+                    containerColor = if (selectedOperations!![i]) {
+                        palette.primary
+                    } else {
+                        palette.base300
+                    }
+                    contentColor = if (selectedOperations!![i]) {
+                        palette.primaryContent
+                    } else {
+                        palette.baseContent
+                    }
+                }
+                item {
+                    Button(
+                        onClick = {
+                            when (selectionName) {
+                                "Сложность" -> vm.currentDifficulty.postValue(i)
+                                "Операции" -> {
+                                    var operations: MutableList<Boolean> = mutableListOf(false, false, false, false)
+                                    for (ind in selectedOperations!!.indices) {
+                                        if (ind == i) {
+                                            operations[ind] = !selectedOperations!![ind]
+                                        } else {
+                                            operations[ind] = selectedOperations!![ind]
+                                        }
+                                    }
+                                    if (operations == mutableListOf(false, false, false, false)) {
+                                        operations = mutableListOf(true, true, true, true)
+                                    }
+                                    Log.i("TEST_OPERATIONS", operations.toString())
+                                    vm.currentOperation.postValue(operations)
+                                }
+                                "Тип" -> vm.currentType.postValue(i)
+                                "Время" -> vm.currentTime.postValue(i)
+                                "Количество" -> vm.currentCount.postValue(i)
+                            }
+//                            vm.loadRating()
+                        },
+                        shape = RoundedCornerShape(10.dp),
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = containerColor,
+                            contentColor = contentColor
+                        )
+                    ) {
+                        Text(
+                            text = elements[i]
+                        )
+                    }
+                }
+            }
+        }
+    }
 }

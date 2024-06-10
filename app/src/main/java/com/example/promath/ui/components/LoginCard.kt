@@ -58,7 +58,7 @@ fun LoginCard(vm: LoginViewModel, navController: NavController) {
     val loginResult by vm.loginResult.observeAsState()
 
     if (loginResult != null && loginResult!!.status == ResultModel.Status.SUCCESS) {
-        navController.navigate("main_screen")
+        navController.navigate("profile_screen")
     }
 
     Column(
@@ -68,7 +68,7 @@ fun LoginCard(vm: LoginViewModel, navController: NavController) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Login", color = palette.baseContent, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+        Text(text = "Вход в аккаунт", color = palette.baseContent, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
         if (loginResult != null && loginResult!!.status == ResultModel.Status.FAILURE) {
             Text(text = loginResult!!.message.toString(), color = palette.error, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
         }
@@ -80,7 +80,7 @@ fun LoginCard(vm: LoginViewModel, navController: NavController) {
                 login = it
             },
             placeholder = {
-                Text(text = "Login")
+                Text(text = "Имя пользователя")
             },
             leadingIcon = {
                 Icon(imageVector = Icons.Default.Person, contentDescription = null)
@@ -102,7 +102,7 @@ fun LoginCard(vm: LoginViewModel, navController: NavController) {
                 password = it
             },
             placeholder = {
-                Text(text = "Password")
+                Text(text = "Пароль")
             },
             leadingIcon = {
                 Icon(imageVector = Icons.Default.Lock, contentDescription = null)
@@ -142,7 +142,7 @@ fun LoginCard(vm: LoginViewModel, navController: NavController) {
             ),
             shape = RoundedCornerShape(10.dp)
         ) {
-            Text(text = "Accept")
+            Text(text = "Продолжить")
         }
     }
 }
@@ -168,7 +168,7 @@ fun RegistrationCard(vm: RegistrationViewModel, navController: NavController) {
     val registrationResult by vm.registrationResult.observeAsState()
 
     if (registrationResult != null && registrationResult!!.status == ResultModel.Status.SUCCESS) {
-        navController.navigate("main_screen")
+        navController.navigate("profile_screen")
     }
     var isValidLogin by remember {
         mutableStateOf(true)
@@ -184,16 +184,16 @@ fun RegistrationCard(vm: RegistrationViewModel, navController: NavController) {
             .padding(16.dp),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(text = "Registration", color = palette.baseContent, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+        Text(text = "Регистрация", color = palette.baseContent, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
         if (registrationResult != null && registrationResult!!.status == ResultModel.Status.FAILURE) {
             Text(text = registrationResult!!.message.toString(), color = palette.error, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
         }
         if (!correctPassword) {
-            Text(text = "Password mismatch", color = palette.error, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+            Text(text = "Пароли не совпадают", color = palette.error, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
         } else if (!isValidLogin) {
-            Text(text = "The login must be longer than 2 and shorter than 26 characters. Consist of Latin letters, numbers and -, _, .", color = palette.error, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+            Text(text = "Имя пользователя должно быть длиннее 2 и короче 26 символов. Содеражать Заглавные либо строчные латинские буквы, цифры или '-', '_', '.'", color = palette.error, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
         } else if (!isValidPassword) {
-            Text(text = "The password must be longer than 7 and shorter than 26 characters. Must contain at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character", color = palette.error, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
+            Text(text = "Пароль должен быть длинне 7 и короче 26 символов. Содержать хотя бы одну заглавную, одну строчную латинскую букву, 1 цифру и 1 специальный символ.", color = palette.error, fontWeight = FontWeight.SemiBold, fontSize = 20.sp)
         }
         Spacer(modifier = Modifier.height(8.dp))
         OutlinedTextField(
@@ -203,7 +203,7 @@ fun RegistrationCard(vm: RegistrationViewModel, navController: NavController) {
                 login = it
             },
             placeholder = {
-                Text(text = "Login")
+                Text(text = "Имя пользователя")
             },
             leadingIcon = {
                 Icon(imageVector = Icons.Default.Person, contentDescription = null)
@@ -225,7 +225,7 @@ fun RegistrationCard(vm: RegistrationViewModel, navController: NavController) {
                 password = it
             },
             placeholder = {
-                Text(text = "Password")
+                Text(text = "Пароль")
             },
             leadingIcon = {
                 Icon(imageVector = Icons.Default.Lock, contentDescription = null)
@@ -260,7 +260,7 @@ fun RegistrationCard(vm: RegistrationViewModel, navController: NavController) {
                 password2 = it
             },
             placeholder = {
-                Text(text = "Confirm password")
+                Text(text = "Повторите пароль")
             },
             leadingIcon = {
                 Icon(imageVector = Icons.Default.Lock, contentDescription = null)
@@ -318,7 +318,7 @@ fun RegistrationCard(vm: RegistrationViewModel, navController: NavController) {
             ),
             shape = RoundedCornerShape(10.dp)
         ) {
-            Text(text = "Accept")
+            Text(text = "Продолжить")
         }
     }
 }
