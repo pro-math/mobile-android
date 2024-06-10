@@ -87,20 +87,20 @@ fun FullInfoGameDialog(
                     Text(text = element.mathOperations.toString().replace("[", "").replace("]", ""), color = palette.primary)
                 }
                 Row {
-                    Text(text = "Тип", color = palette.baseContent)
-                    Text(
-                        text = if (element.gameMode == GameMode.CountMode) {
-                            "count mode"
-                        } else {
-                            "time_mode"
-                        }, color = palette.primary)
-                }
-                Row {
+                    Text(text = "Тип: ", color = palette.baseContent)
                     Text(
                         text = if (element.gameMode == GameMode.CountMode) {
                             "На количество"
                         } else {
                             "На время"
+                        }, color = palette.primary)
+                }
+                Row {
+                    Text(
+                        text = if (element.gameMode == GameMode.CountMode) {
+                            "Количество"
+                        } else {
+                            "Время"
                         }, color = palette.baseContent)
                     Text(
                         text = if (element.gameMode == GameMode.CountMode) {
@@ -120,12 +120,20 @@ fun FullInfoGameDialog(
                     Text(text = (element.totalCount - element.correctCount).toString(), color = palette.error)
                 }
                 Row {
-                    Text(text = "Процент правильно решенных: ", color = palette.baseContent)
+                    Text(text = "Процент: ", color = palette.baseContent)
                     Text(text = (element.correctCount * 100 / element.totalCount).toString() + "%", color = palette.info)
                 }
                 Row {
-                    Text(text = "Время: ", color = palette.baseContent)
-                    Text(text = "30 с", color = palette.info)
+                    Text(text = if (element.gameMode == GameMode.CountMode) {
+                        "Время: "
+                    } else {
+                        "Количество: "
+                    }, color = palette.baseContent)
+                    Text(text = if (element.gameMode == GameMode.CountMode) {
+                        "${element.duration} c"
+                    } else {
+                        element.totalCount.toString()
+                    }, color = palette.info)
                 }
                 Spacer(modifier = Modifier.height(8.dp))
                 Row(
